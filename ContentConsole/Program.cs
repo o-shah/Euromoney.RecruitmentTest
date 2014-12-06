@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ContentConsole
 {
@@ -6,36 +7,42 @@ namespace ContentConsole
     {
         public static void Main(string[] args)
         {
-            string bannedWord1 = "swine";
-            string bannedWord2 = "bad";
-            string bannedWord3 = "nasty";
-            string bannedWord4 = "horrible";
-
-            string content =
-                "The weather in Manchester in winter is bad. It rains all the time - it must be horrible for people visiting.";
-
-            int badWords = 0;
-            if (content.Contains(bannedWord1))
+            try
             {
-                badWords = badWords + 1;
-            }
-            if (content.Contains(bannedWord2))
-            {
-                badWords = badWords + 1;
-            }
-            if (content.Contains(bannedWord3))
-            {
-                badWords = badWords + 1;
-            }
-            if (content.Contains(bannedWord4))
-            {
-                badWords = badWords + 1;
-            }
+                UserType user = UserType.Reader;
+                if (args.Length > 0)
+                {
+                    user = (UserType)Convert.ToInt32(args[0]);
+                }
+                INegativeWords wordInterface;
+                if (args.Length < 2)
+                {
+                    wordInterface = new NegativeWords(new List<string> { "swine", "bad", "nasty", "horrible" });
+                }
+                else
+                {
+                    wordInterface = new NegativeWords(args[1].Split(';'));
+                }
+                WordProcessor p = new WordProcessor(wordInterface);
 
-            Console.WriteLine("Scanned the text:");
-            Console.WriteLine(content);
-            Console.WriteLine("Total Number of negative words: " + badWords);
+                Console.WriteLine("Running Existing code: ");
+                p.ExistingCode(Console.Out, args);
 
+                Console.WriteLine("Running Story 1");
+                var count = p.CountNegativeWords("The weather in Manchester in winter is bad. It rains all the time - it must be horrible for people visiting.");
+                Console.WriteLine("Story 1 result = {0}", count);
+
+                Console.WriteLine("Running Story 3");
+                var story3 = p.FilterNegativeWords("The weather in Manchester in winter is bad. It rains all the time - it must be horrible for people visiting.");
+                Console.WriteLine("Story 3 result = {0}", story3);
+
+            }
+            catch (Exception e)
+            {
+                // TODO: add better logging
+                Console.Error.WriteLine("Fatal Exception caught:");
+                Console.Error.WriteLine(e.ToString());
+            }
             Console.WriteLine("Press ANY key to exit.");
             Console.ReadKey();
         }
