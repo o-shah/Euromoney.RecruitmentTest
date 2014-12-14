@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentConsole.Test.Unit
+namespace ContentConsole.Tests.Unit
 {
+    using ContentLibrary;
     using NUnit.Framework;
 
     public class Story1 : TestBase

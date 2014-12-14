@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentConsole
+namespace ContentLibrary
 {
-    public interface INegativeWords
+    public enum UserType
     {
-        List<string> Words { get; }
+        Administrator,
+        Reader,
+        Curator,
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentConsole
+namespace ContentLibrary
 {
     public class NegativeWords : INegativeWords
     {

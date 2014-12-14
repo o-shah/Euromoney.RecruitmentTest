@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentConsole
+namespace ContentLibrary
 {
     public class WordProcessor
     {
@@ -34,18 +34,6 @@ namespace ContentConsole
             }
         }
         private bool disableFiltering;
-
-        public void SetNegativeWords(IEnumerable<string> words)
-        {
-            // TODO: any way of making this an AOP attribute?
-            if (User != UserType.Administrator)
-            {
-                throw new UnauthorizedAccessException("You do not have the rights to perform this action.");
-            }
-
-            Words.Words.Clear();
-            Words.Words.AddRange(words);
-        }
 
         public void ExistingCode(TextWriter console, string[] args)
         {

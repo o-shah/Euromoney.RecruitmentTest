@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentLibrary;
+using NUnit.Framework;
 
-namespace ContentConsole.Test.Unit
+namespace ContentConsole.Tests.Unit
 {
-    using NUnit.Framework;
 
     public class Story4 : TestBase
     {

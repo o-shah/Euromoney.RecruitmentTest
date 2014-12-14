@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ContentLibrary;
 
 namespace ContentConsole
 {
@@ -9,21 +11,18 @@ namespace ContentConsole
         {
             try
             {
-                UserType user = UserType.Reader;
-                if (args.Length > 0)
+                var typedArgs = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
+
+                if (typedArgs.Errors != null && typedArgs.Errors.Any())
                 {
-                    user = (UserType)Convert.ToInt32(args[0]);
+                    var help = CommandLine.Text.HelpText.AutoBuild<CommandOptions>(typedArgs);
+                    Console.WriteLine(help.ToString());
+                    return;
                 }
-                INegativeWords wordInterface;
-                if (args.Length < 2)
-                {
-                    wordInterface = new NegativeWords(new List<string> { "swine", "bad", "nasty", "horrible" });
-                }
-                else
-                {
-                    wordInterface = new NegativeWords(args[1].Split(';'));
-                }
+                // new List<string> { "swine", "bad", "nasty", "horrible" }
+                INegativeWords wordInterface = new NegativeWords(typedArgs.Value.NegativeWords);
                 WordProcessor p = new WordProcessor(wordInterface);
+                p.User = typedArgs.Value.UserTypeId;
 
                 Console.WriteLine("Running Existing code: ");
                 p.ExistingCode(Console.Out, args);
