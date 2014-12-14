@@ -26,7 +26,7 @@ namespace ContentLibrary
             }
             set
             {
-                if (User != UserType.Administrator)
+                if (User != UserType.Administrator || User != UserType.Curator)
                 {
                     throw new UnauthorizedAccessException("You do not have the rights to perform this action.");
                 }
@@ -35,7 +35,7 @@ namespace ContentLibrary
         }
         private bool disableFiltering;
 
-        public void ExistingCode(TextWriter console, string[] args)
+        public void ExistingCode(TextWriter console)
         {
             string bannedWord1 = "swine";
             string bannedWord2 = "bad";

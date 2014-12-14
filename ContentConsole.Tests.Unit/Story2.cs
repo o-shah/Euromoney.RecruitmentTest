@@ -11,19 +11,13 @@ namespace ContentConsole.Tests.Unit
 
     public class Story2 : TestBase
     {
-        public override void Setup()
-        {
-            base.Setup();
-
-            NegativeWordMock.Setup(x => x.Words.Add(It.IsAny<string>()));
-            Processor.Words = NegativeWordMock.Object;
-        }
-
         [Test]
         public void ShouldChangeNegativeWords()
         {
-            Processor.SetNegativeWords(new List<string> { "a", "b", "c" });
-            NegativeWordMock.Verify(x => x.Words.Add(It.IsAny<string>()));
+            ForeignProcess.StartInfo.Arguments = "/u:administrator /n:\"a,b,c\" /t:1";
+            ForeignProcess.Start();
+
+            Assert.AreEqual(ForeignProcess.StandardOutput.ReadToEnd(), "Negative Words Set");
         }
     }
 }

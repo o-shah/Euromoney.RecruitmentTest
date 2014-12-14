@@ -6,26 +6,20 @@ using System.Threading.Tasks;
 
 namespace ContentConsole.Tests.Unit
 {
+    using System.Diagnostics;
     using ContentLibrary;
     using NUnit.Framework;
 
     public class Story1 : TestBase
     {
-        public override void Setup()
-        {
-            base.Setup();
-
-            Processor.SetNegativeWords(new List<string> { "swine", "bad", "nasty", "horrible" });
-        }
-
         [Test]
-        public void ShouldCountNegativeWords([Values(UserType.Reader, UserType.Curator, UserType.Administrator)] UserType userType)
+        public void ShouldCountNegativeWords()
         {
-            Processor.User = userType;
+            ForeignProcess.StartInfo.Arguments = "/u:reader /t:1";
+            ForeignProcess.Start();
 
-            int result = Processor.CountNegativeWords(DefaultInput);
-
-            Assert.AreEqual(result, 3);
+            Assert.AreEqual(ForeignProcess.StandardOutput.ReadToEnd(), "Scanned the text:\r\n" + DefaultInput +
+                "Total Number of negative words: 2\r\nPress ANY key to exit.");
         }
     }
 }

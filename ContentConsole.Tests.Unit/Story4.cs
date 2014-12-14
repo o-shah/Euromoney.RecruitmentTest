@@ -14,11 +14,10 @@ namespace ContentConsole.Tests.Unit
         [Test]
         public void ShouldDisableNegativeWordCount()
         {
-            Processor.User = UserType.Curator;
-            Processor.DisableFiltering = true;
-            string result = Processor.FilterNegativeWords(DefaultInput);
+            ForeignProcess.StartInfo.Arguments = "/t:4 /u:curator /d:1";
+            ForeignProcess.Start();
 
-            Assert.AreEqual(result, "some text I'll figure out once the test actually runs");
+            Assert.AreEqual(ForeignProcess.StandardOutput.ReadToEnd(), "story 4 result = " + this.DefaultInput);
         }
     }
 }

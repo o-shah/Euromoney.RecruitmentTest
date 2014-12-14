@@ -13,9 +13,11 @@ namespace ContentConsole.Tests.Unit
         [Test]
         public void ShouldFilterNegativeWords()
         {
-            string result = Processor.FilterNegativeWords(DefaultInput);
+            ForeignProcess.StartInfo.Arguments = "/t:3";
+            ForeignProcess.Start();
 
-            Assert.AreEqual(result, "some text I'll figure out once the test actually runs");
+            Assert.AreEqual(ForeignProcess.StandardOutput.ReadToEnd(),
+                "The weather in Manchester in winter is b#d. It rains all the time - it must be h######e for people visiting.");
         }
     }
 }
