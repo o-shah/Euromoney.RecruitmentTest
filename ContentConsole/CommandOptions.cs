@@ -1,11 +1,12 @@
 ﻿using CommandLine;
-using ContentLibrary;
+using System;
 using System.Collections.Generic;
 
-namespace ContentConsole
+namespace ContentLibrary
 {
     public class CommandOptions
     {
+        [CLSCompliant(false)]
         [Option('n', Min = 1, Max = 9, HelpText = "Provide a custom list of negative words", DefaultValue = new string[] { "swine", "bad", "nasty", "horrible" })]
         public IEnumerable<string> NegativeWords { get; set; }
 

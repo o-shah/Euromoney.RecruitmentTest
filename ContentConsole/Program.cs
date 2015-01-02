@@ -1,12 +1,11 @@
 ﻿using CommandLine;
 using CommandLine.Text;
-using ContentLibrary;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace ContentConsole
+namespace ContentLibrary
 {
     public static class Program
     {

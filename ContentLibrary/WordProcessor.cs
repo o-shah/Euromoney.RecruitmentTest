@@ -33,6 +33,8 @@ namespace ContentLibrary
         }
         private bool disableFiltering;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification = "This is old code that was present in the original version")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "This is old code that was present in the original version")]
         public void ExistingCode(TextWriter console)
         {
             string bannedWord1 = "swine";
@@ -68,11 +70,16 @@ namespace ContentLibrary
 
         public int CountNegativeWords(string input)
         {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                throw new ArgumentException("input is invalid", "input", null);
+            }
+
             // Skip validation for usertype here.
             IList<string> negativeWords = this.Words.Words;
             var inputSentence = input.Split(new[] { ' ', '.', ',', '-' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var result = inputSentence.Count(c => negativeWords.Any(d => d.Equals(c, StringComparison.InvariantCultureIgnoreCase)));
+            var result = inputSentence.Count(c => negativeWords.Any(d => d.Equals(c, StringComparison.CurrentCultureIgnoreCase)));
             return result;
         }
 
