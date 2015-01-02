@@ -10,7 +10,7 @@ namespace ContentLibrary
             Words = dataStore.ToList();
         }
 
-        public List<string> Words
+        public IList<string> Words
         {
             get;
             private set;

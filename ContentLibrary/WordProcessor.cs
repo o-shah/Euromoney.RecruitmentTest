@@ -69,7 +69,7 @@ namespace ContentLibrary
         public int CountNegativeWords(string input)
         {
             // Skip validation for usertype here.
-            List<string> negativeWords = this.Words.Words;
+            IList<string> negativeWords = this.Words.Words;
             var inputSentence = input.Split(new[] { ' ', '.', ',', '-' }, StringSplitOptions.RemoveEmptyEntries);
 
             var result = inputSentence.Count(c => negativeWords.Any(d => d.Equals(c, StringComparison.InvariantCultureIgnoreCase)));
@@ -85,7 +85,7 @@ namespace ContentLibrary
             }
             // an old verison of this function had two bugs: punctuation is lost. you forgot to do ## ing. No time to sort
 
-            List<string> negativeWords = this.Words.Words;
+            IList<string> negativeWords = this.Words.Words;
             var inputSentence = input;
 
             foreach (var word in negativeWords)

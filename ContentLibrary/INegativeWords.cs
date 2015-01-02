@@ -4,6 +4,6 @@ namespace ContentLibrary
 {
     public interface INegativeWords
     {
-        List<string> Words { get; }
+        IList<string> Words { get; }
     }
 }

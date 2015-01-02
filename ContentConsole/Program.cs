@@ -69,8 +69,6 @@ namespace ContentConsole
                     {
                         throw new UnauthorizedAccessException("You need to be an administrator to perform this action");
                     }
-                    p.Words.Words.Clear();
-                    p.Words.Words.AddRange(typedArgs.NegativeWords);
                     console.WriteLine("Negative Words Set");
                     break;
                 case 3:
