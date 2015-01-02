@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NUnit.Framework;
 
 namespace ContentConsole.Tests.Unit
 {
-    using System.Diagnostics;
-    using ContentLibrary;
-    using NUnit.Framework;
-
     public class Story1 : TestBase
     {
         [Test]
         public void ShouldCountNegativeWords()
         {
-            ForeignProcess.StartInfo.Arguments = "/u:reader /t:1";
-            ForeignProcess.Start();
+            ForeignProcess.StartInfo.Arguments = "/u Reader /t 1";
+            if (!ForeignProcess.Start())
+            {
+                Assert.Fail("Failed to start process");
+            }
+            if (!ForeignProcess.WaitForExit(2000))
+            {
+                Assert.Fail("Process failed to exit on time");
+            }
+            string result = ForeignProcess.StandardOutput.ReadToEnd();
 
-            Assert.AreEqual(ForeignProcess.StandardOutput.ReadToEnd(), "Scanned the text:\r\n" + DefaultInput +
-                "Total Number of negative words: 2\r\nPress ANY key to exit.");
+            Assert.AreEqual(result, "Scanned the text:\r\n" + DefaultInput +
+                "\r\nTotal Number of negative words: 2\r\n");
+            Assert.IsEmpty(ForeignProcess.StandardError.ReadToEnd());
         }
     }
 }

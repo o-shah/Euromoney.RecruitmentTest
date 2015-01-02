@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContentLibrary
 {
@@ -26,7 +24,7 @@ namespace ContentLibrary
             }
             set
             {
-                if (User != UserType.Administrator || User != UserType.Curator)
+                if (User != UserType.Administrator && User != UserType.Curator)
                 {
                     throw new UnauthorizedAccessException("You do not have the rights to perform this action.");
                 }

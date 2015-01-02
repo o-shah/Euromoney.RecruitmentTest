@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
 using ContentLibrary;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace ContentConsole
 {
@@ -14,13 +14,22 @@ namespace ContentConsole
         {
             try
             {
-                var typedArgs = Parser.Default.ParseArguments<CommandOptions>(args);
-
-                if (typedArgs.Errors != null && typedArgs.Errors.Any())
+                ParserResult<CommandOptions> typedArgs;
+                using (var commandParser = new Parser(s =>
                 {
-                    var help = HelpText.AutoBuild<CommandOptions>(typedArgs);
-                    Console.WriteLine(help.ToString());
-                    return;
+                    s.CaseSensitive = false;
+                    s.IgnoreUnknownArguments = false;
+                    s.ParsingCulture = CultureInfo.InvariantCulture;
+                }))
+                {
+                    typedArgs = commandParser.ParseArguments<CommandOptions>(args);
+
+                    if (typedArgs.Errors != null && typedArgs.Errors.Any())
+                    {
+                        var help = HelpText.AutoBuild<CommandOptions>(typedArgs);
+                        Console.WriteLine(help.ToString());
+                        return;
+                    }
                 }
                 // new List<string> { "swine", "bad", "nasty", "horrible" }
                 INegativeWords wordInterface = new NegativeWords(typedArgs.Value.NegativeWords);
@@ -35,8 +44,8 @@ namespace ContentConsole
                 Console.Error.WriteLine("Fatal Exception caught:");
                 Console.Error.WriteLine(e.ToString());
             }
-            Console.WriteLine("Press ANY key to exit.");
-            Console.ReadKey();
+            // Console.WriteLine("Press ANY key to exit.");
+            // Console.ReadKey();
         }
 
         private static void RunApplication(WordProcessor p, TextWriter console, CommandOptions typedArgs)
@@ -50,19 +59,19 @@ namespace ContentConsole
                     p.ExistingCode(console);
                     break;
                 case 1:
-                    console.WriteLine("Running Story 1");
                     count = p.CountNegativeWords(typedArgs.InputText);
-                    Console.WriteLine("Story 1 result = {0}", count);
+                    console.WriteLine("Scanned the text:");
+                    console.WriteLine(typedArgs.InputText);
+                    console.WriteLine("Total Number of negative words: {0}", count);
                     break;
                 case 2:
-                    console.WriteLine("Running Story 2");
                     if (typedArgs.UserTypeId != UserType.Administrator)
                     {
                         throw new UnauthorizedAccessException("You need to be an administrator to perform this action");
                     }
                     p.Words.Words.Clear();
                     p.Words.Words.AddRange(typedArgs.NegativeWords);
-                    Console.WriteLine("Negative Words Set");
+                    console.WriteLine("Negative Words Set");
                     break;
                 case 3:
                     console.WriteLine("Running Story 3");

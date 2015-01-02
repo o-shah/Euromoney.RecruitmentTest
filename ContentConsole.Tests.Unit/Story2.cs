@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NUnit.Framework;
 
 namespace ContentConsole.Tests.Unit
 {
-    using Moq;
-    using NUnit.Framework;
-
     public class Story2 : TestBase
     {
         [Test]
         public void ShouldChangeNegativeWords()
         {
-            ForeignProcess.StartInfo.Arguments = "/u:administrator /n:\"a,b,c\" /t:1";
-            ForeignProcess.Start();
+            ForeignProcess.StartInfo.Arguments = "/u Administrator /n \"a,b,c\" /t 2";
+            if (!ForeignProcess.Start())
+            {
+                Assert.Fail("Failed to start process");
+            }
+            if (!ForeignProcess.WaitForExit(2000))
+            {
+                Assert.Fail("Process failed to exit on time");
+            }
+            string result = ForeignProcess.StandardOutput.ReadToEnd();
 
-            Assert.AreEqual(ForeignProcess.StandardOutput.ReadToEnd(), "Negative Words Set");
+            Assert.AreEqual(result, "Negative Words Set\r\n");
+            Assert.IsEmpty(ForeignProcess.StandardError.ReadToEnd());
         }
     }
 }

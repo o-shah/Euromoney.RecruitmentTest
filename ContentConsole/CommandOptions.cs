@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 using ContentLibrary;
+using System.Collections.Generic;
 
 namespace ContentConsole
 {
     public class CommandOptions
     {
-        [Option('n', HelpText = "Provide a custom list of negative words", DefaultValue = new string[] { "swine", "bad", "nasty", "horrible" })]
-        public IList<string> NegativeWords { get; set; }
+        [Option('n', Min = 1, Max = 9, HelpText = "Provide a custom list of negative words", DefaultValue = new string[] { "swine", "bad", "nasty", "horrible" })]
+        public IEnumerable<string> NegativeWords { get; set; }
 
         [Option('u', HelpText = "Set the current User", DefaultValue = UserType.Administrator)]
         public UserType UserTypeId { get; set; }

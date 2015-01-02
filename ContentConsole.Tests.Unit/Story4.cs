@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentLibrary;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace ContentConsole.Tests.Unit
 {
@@ -14,10 +8,19 @@ namespace ContentConsole.Tests.Unit
         [Test]
         public void ShouldDisableNegativeWordCount()
         {
-            ForeignProcess.StartInfo.Arguments = "/t:4 /u:curator /d:1";
-            ForeignProcess.Start();
+            ForeignProcess.StartInfo.Arguments = "/t 4 /u Curator /d 1";
+            if (!ForeignProcess.Start())
+            {
+                Assert.Fail("Failed to start process");
+            }
+            if (!ForeignProcess.WaitForExit(2000))
+            {
+                Assert.Fail("Process failed to exit on time");
+            }
+            string result = ForeignProcess.StandardOutput.ReadToEnd();
 
-            Assert.AreEqual(ForeignProcess.StandardOutput.ReadToEnd(), "story 4 result = " + this.DefaultInput);
+            Assert.AreEqual(result, "Running Story 4\r\nStory 4 result = " + this.DefaultInput + "\r\n");
+            Assert.IsEmpty(ForeignProcess.StandardError.ReadToEnd());
         }
     }
 }
